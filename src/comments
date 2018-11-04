@@ -1,0 +1,23 @@
+fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + myLat + ',' + myLon + '&key=' + myApiKey)
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log('ADDRESS GEOCODE is BACK!! => ' + JSON.stringify(responseJson));
+})
+
+Geocode.setApiKey("AIzaSyAyV5BZnr2kzuVz0q-hLwUYvvwN4Q6noU0");
+Geocode.enableDebug();
+
+allLocations.map(locals =>
+  Geocode.fromAddress(locals).then(
+    response => {
+      if (response.status === "OK") {
+        this.setState({
+          locations: this.state.locations.concat(response.results)
+        });
+      }
+    },
+    error => {
+      console.error(error);
+    }
+  )
+);

@@ -1,0 +1,35 @@
+Geocode.setApiKey("AIzaSyAyV5BZnr2kzuVz0q-hLwUYvvwN4Q6noU0");
+Geocode.enableDebug();
+this.state.allLocations.map(locals =>
+    Geocode.fromAddress(locals.address).then(
+        response => {
+            if (response.status === "OK") {
+            this.setState({
+                locations: this.state.locations.concat(response.results)
+            });
+            }
+        },
+        error => {
+            console.error(error);
+        }
+    )
+);
+<Map markers={local} />
+response.data.response.groups[0].items.map(local => {
+  axios
+    .get(
+      "https://api.foursquare.com/v2/venues/" + local.venue.id + "/photos?",
+      {
+        params: {
+          client_id: "5RQJDOUUNXSGPAHMUHIIKG0H4TJXZV1PTB42MRM2L4M2435W",
+          client_secret: "JR2E1K4WRYLEOJGSFWNYYEPLRR2PXXL1KB5ANU3U5E4KFPFZ",
+          v: "20180323"
+        }
+      }
+    )
+    .then(response => {
+      this.setState({
+        locations: this.state.photos.concat(response)
+      });
+    });
+});
