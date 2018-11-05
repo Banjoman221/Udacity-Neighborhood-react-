@@ -2,16 +2,13 @@ import React, { Component } from "react";
 import "./App.css";
 import Map from "./Map";
 import axios from "axios";
-import Input from "./Input";
-import escapeRegExp from "escape-string-regexp";
 
 class App extends Component {
   state = {
-    query: "",
-    locations: [],
-    photos: []
+    locations: []
   };
   componentDidMount() {
+     { /* Grabs the information from Foursquare api about Restaurants in Belmont, MS */}
     axios
       .get("https://api.foursquare.com/v2/venues/explore", {
         params: {
@@ -23,46 +20,27 @@ class App extends Component {
           v: "20180323"
         }
       })
-      .then(
-        response => {
-          if (response.status === 200) {
-            this.setState({
-              locations: this.state.locations.concat(
-                response.data.response.groups[0].items
-              )
-            });
+      .then(response => {
+        if (response.status === 200) {
+          this.setState({
+            locations: this.state.locations.concat(
+              response.data.response.groups[0].items
+            )
+          });
 
-            console.log(response);
-            console.log(response.data.response.groups[0].items);
-          }
-      }).catch(error => {
-          console.error(error);
+          console.log(response);
+          console.log(response.data.response.groups[0].items);
+        }
       })
+      .catch(error => {
+        console.error(error);
+      });
   }
-  updateQuery = address => {
-    this.setState({
-      query: address
-    });
-  };
 
   render() {
-    let filteredMarkers;
-    if (this.state.query) {
-      const match = new RegExp(escapeRegExp(this.state.query), "i");
-      filteredMarkers = this.state.locations.filter(
-        b => match.test(b.venue.name) || match.test(b.venue.location.address)
-      );
-      console.log(filteredMarkers);
-      console.log(this.state.photos);
-    } else {
-      filteredMarkers = this.state.locations;
-    }
     return (
       <div className="app">
-        <div className="titleBar">
-          <Input addresses={filteredMarkers} updateQuery={this.updateQuery} />
-        </div>
-        <Map markers={filteredMarkers} />
+        <Map locations={this.state.locations} />
       </div>
     );
   }
