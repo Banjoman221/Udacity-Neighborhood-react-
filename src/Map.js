@@ -8,45 +8,52 @@ import {
   InfoWindow
 } from "react-google-maps";
 import { compose, withProps } from "recompose";
-import Input from "./Input";
+import NavBar from "./NavBar";
 import escapeRegExp from "escape-string-regexp";
 
-{/* Sets the height of the map to window */}
+
 const mapHeight = window.innerHeight;
-{/* Creates the GoogleMap */}
+
 const MyMap = compose(
   withProps({
     googleMapURL:
       "https://maps.googleapis.com/maps/api/js?key=AIzaSyAyV5BZnr2kzuVz0q-hLwUYvvwN4Q6noU0&v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `${mapHeight}px` }} />,
+containerElement: <div style={{ width: "100%", height: `${mapHeight}px` , border: `3px solid black`, borderRadius: `10px`}} />,
     mapElement: <div style={{ height: `100%` }} />
   }),
   withScriptjs,
   withGoogleMap
 )(props => (
   <GoogleMap defaultZoom={15} defaultCenter={{ lat: 34.50982, lng: -88.207 }}>
-      {/* Map Markers */}
+
     {props.markers.map(local => (
       <Marker
         className="marker"
         key={local.venue.id}
         position={local.venue.location.labeledLatLngs[0]}
-        onClick={() => props.openClick(local.venue.id)}
+        onClick={() => props.openClick(local.venue)}
         animation={
           props.isOpen && props.showIndex === local.venue.id && props.bounce
         }
       >
-      {/* InfoWindow for Markers */}
+
         {props.isOpen &&
           props.showIndex === local.venue.id && (
             <InfoWindow onCloseClick={props.closeClick}>
-              <span>
-                {local.venue.name.toUpperCase()},
-                {local.venue.location.formattedAddress[0]},
-                {local.venue.location.formattedAddress[1]},
-                {local.venue.location.formattedAddress[2]}
-              </span>
+              <div className="infoWindow">
+                <img
+                  src={local.venue.categories[0].icon.prefix + "100.png"}
+                  alt=" "
+                  className="img"
+                />
+                <h2>{local.venue.name.toUpperCase()}</h2>
+                <p>
+                  {local.venue.location.formattedAddress[0]},{
+                    local.venue.location.formattedAddress[1]
+                  }
+                </p>
+              </div>
             </InfoWindow>
           )}
       </Marker>
@@ -59,34 +66,41 @@ class Map extends Component {
     isOpen: false,
     showIndex: null,
     animation: null,
-    query: ""
+    query: "",
+    navToggled: true
   };
   openClick = index => {
-      {/* Sets animation and grabs the index and allows the InfoWindow to popup */}
     this.setState({
       isOpen: true,
-      showIndex: index,
+      showIndex: index.id,
       animation: google.maps.Animation.BOUNCE
     });
   };
   closeClick = () => {
-      {/* Sets animation to null and closes InfoWindow */}
     this.setState({
       isOpen: false,
       animation: null
     });
   };
   updateQuery = address => {
-      {/* Updates the query of input */}
     this.setState({
       query: address
     });
   };
-
+  openNav = () => {
+    this.setState({
+      navToggled: true
+    });
+  };
+  closeNav = () => {
+    this.setState({
+      navToggled: false
+    });
+  };
   render() {
     let filteredMarkers;
+    let map;
     if (this.state.query) {
-        {/* Filters through the markers and sees if the query matches the letters or numbers on the list */}
       const match = new RegExp(escapeRegExp(this.state.query), "i");
       filteredMarkers = this.props.locations.filter(
         b =>
@@ -96,21 +110,25 @@ class Map extends Component {
       );
       console.log(filteredMarkers);
     } else {
-        {/* All Markers */}
       filteredMarkers = this.props.locations;
     }
+    if (!this.state.navToggled) {
+        map='moveMaps'
+    } else {
+        map='maps'
+    }
+
     return (
       <div className="mapApp">
-        <div className="titleBar">
-            {/* Input for filtering the markers */}
-          <Input
-            addresses={filteredMarkers}
-            updateQuery={this.updateQuery}
-            clickMarker={this.openClick}
-          />
-        </div>
-        <div className="maps">
-            {/* GoogleMap */}
+        <NavBar
+          updateQuery={this.updateQuery}
+          openClick={this.openClick}
+          filteredMarkers={filteredMarkers}
+          navToggled={this.state.navToggled}
+          openNav={this.openNav}
+          closeNav={this.closeNav}
+        />
+    <div className={map}>
           <MyMap
             markers={filteredMarkers}
             openClick={this.openClick}
@@ -118,6 +136,8 @@ class Map extends Component {
             isOpen={this.state.isOpen}
             showIndex={this.state.showIndex}
             bounce={this.state.animation}
+            image={this.state.picture}
+            alt=''
           />
         </div>
       </div>

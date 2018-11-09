@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 
 class Input extends Component {
-  handleClick = address => {
-    console.log(address);
-  };
   render() {
     return (
       <div className="input">
@@ -15,21 +12,26 @@ class Input extends Component {
           type="text"
           placeholder="Filter List"
           value={this.props.query}
+          aria-label='filter list'
           onChange={event => this.props.updateQuery(event.target.value)}
         />
         {/* List of addresses from Foursquare */}
         <div className="locationList">
           {this.props.addresses.map(local => (
-            <div
-              key={local.venue.name}
-              className="address"
-              onClick={() => this.props.clickMarker(local.venue.id)}
-            >
-              <h4>{local.venue.name.toUpperCase()}</h4>
-              <p>
-                {local.venue.location.formattedAddress[0]},
-                {local.venue.location.formattedAddress[1]}
-              </p>
+            <div className="addressList" key={local.venue.name}>
+              <div
+                className="address"
+                onClick={() => {
+                  this.props.clickMarker(local.venue);
+                  this.props.toggleNav();
+                }}
+              >
+                <h3>{local.venue.name.toUpperCase()}</h3>
+                <p>
+                  {local.venue.location.formattedAddress[0]},
+                  {local.venue.location.formattedAddress[1]}
+                </p>
+              </div>
             </div>
           ))}
         </div>

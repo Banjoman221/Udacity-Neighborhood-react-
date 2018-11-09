@@ -1,10 +1,14 @@
 html {
   box-sizing: border-box;
 }
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
-html, body, .root {
+html,
+body,
+.root {
   height: 100%;
 }
 body {
@@ -13,56 +17,171 @@ body {
   font-family: sans-serif;
   line-height: 1.5;
 }
+/* navBar */
+.navComponent {
+  display: flex;
+}
+.nav {
+  width: 30px;
+  margin: 3.7px 10px 10px 10px;
+  cursor: pointer;
+}
+.navBar {
+  display: flex;
+  flex-flow: column;
+  background-color: #dedede;
+  width: 100%;
+  margin-left: 350px;
+  height: 44px;
+  border: 2.5px solid black;
+  border-radius: 10px;
+}
+.navigate {
+  display: flex;
+  flex-flow: column;
+  background-color: #dedede;
+  width: 100%;
+  margin-left: 0;
+  height: 44px;
+  border: 2.5px solid black;
+  border-radius: 10px;
+}
+.hamburgerMenu {
+  width: 35px;
+  height: 8px;
+  background-color: black;
+  margin: 1.7px;
+}
+/* Header */
 .header {
-    color: black;
-    font-size: 18pt;
-    padding-left: 10px;
+  color: black;
+  font-size: 18pt;
+  padding-left: 10px;
+  max-width: 100%;
+  background-color: #dedede;
 }
 /* Map */
-.maps {
-    margin-left: 350px
+.moveMaps {
+  padding-left: 0;
 }
 /* Side Bar */
 .titleBar {
-    background-color: #DEDEDE;
-    font-size: 13pt;
-    position: fixed;
-    width: 351px;
-    height: 100%;
-    z-index: 1;
-    display: flex;
-    border-radius: 5px;
+  background-color: #dedede;
+  font-size: 15pt;
+  position: fixed;
+  width: 351px;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  border: 2.5px solid black;
+  border-radius: 10px;
 }
 #filter-list {
-    width: 100%;
-    height: 30px;
-    border-radius: 5px;
-    display: flex;
-    position: absolute;
-    top: 60px;
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  position: absolute;
+  top: 60px;
+  border: 4px solid black;
 }
 .locationList {
-    list-style: none;
-    padding-top: 30px;
-    padding-left: 10px;
+  list-style: none;
+  padding-top: 30px;
+  padding-left: 10px;
+  padding: 30px 7px 0 5px;
 }
 .address {
-    padding-left: 5px;
+  padding-left: 5px;
+  box-shadow: 0px 12px 60px #505052;
 }
+/* Addresses in the filterList */
 .address:hover {
-    color: #000000;
-    border-radius: 15px;
-    box-shadow: 2px 2px 20px #505052;
+  border-radius: 15px;
+  box-shadow: -10px 2px 20px #505052;
 }
-/* @keyframes moveUpDown {
-0%   {top: 0px;}
-25%  {top: 50px;}
-50%  {top: 100px;}
-75%  {top: 50px;}
-100% {top: 0px;}
+/* Icon of the Restaurants */
+.img {
+  background-color: #0a0a08;
+  border-radius: 10px;
 }
-.marker:hover {
-animation-name: moveUpDown;
-animation-duration: 4s;
-animation-iteration-count: infinite;
-} */
+.infoWindow p {
+  font-size: 15pt;
+}
+/* Errors */
+.apiError {
+  position: absolute;
+  z-index: 24;
+  background-color: white;
+  left: 35%;
+  padding: 50px 100px 50px 100px;
+  top: 35%;
+  border-radius: 10px;
+  box-shadow: 2px 2px 20px #505052;
+  font-size: 18pt;
+}
+@media screen and (max-width: 372px) {
+  .titleBar {
+    width: 260px;
+    font-size: 12.75pt;
+  }
+  .navBar {
+    margin-left: 260px;
+  }
+  .header {
+    font-size: 16.8pt;
+  }
+  #filter-list {
+    height: 40px;
+    top: 90px;
+  }
+  .address h3 {
+    margin: 13px 0 0 0;
+  }
+  .address p {
+    margin: 0;
+  }
+}
+@media screen and (min-width: 373px) and (max-width: 412px) {
+  .titleBar {
+    font-size: 15pt;
+  }
+  #filter-list {
+    height: 40px;
+  }
+  .address h3 {
+    margin: 10px 0 0 0;
+  }
+  .address p {
+    margin: 0;
+  }
+  .titleBar {
+    width: 325px;
+  }
+  .navBar {
+    margin-left: 325px;
+  }
+  .nav {
+    margin: 3.7px 10px 10px 4px;
+  }
+  #filter-list {
+      height: 40px;
+      top: 90px;
+  }
+}
+@media screen and (min-width: 880px) {
+  .maps {
+    display: flex;
+    padding-left: 350px;
+  }
+  .moveMaps {
+    padding-left: 0;
+  }
+  .input {
+    display: flex;
+    flex-direction: column;
+  }
+  #filter-list {
+      height: 40px;
+  }
+}
