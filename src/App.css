@@ -33,8 +33,8 @@ body {
   width: 100%;
   margin-left: 350px;
   height: 44px;
-  border: 2.5px solid black;
   border-radius: 10px;
+  z-index: 1;
 }
 .navigate {
   display: flex;
@@ -43,8 +43,8 @@ body {
   width: 100%;
   margin-left: 0;
   height: 44px;
-  border: 2.5px solid black;
   border-radius: 10px;
+  z-index: 1;
 }
 .hamburgerMenu {
   width: 35px;
@@ -65,7 +65,7 @@ body {
   padding-left: 0;
 }
 /* Side Bar */
-.titleBar {
+.sideBar {
   background-color: #dedede;
   font-size: 15pt;
   position: fixed;
@@ -73,7 +73,7 @@ body {
   height: 100%;
   z-index: 1;
   display: flex;
-  border: 2.5px solid black;
+  box-shadow: 0px 12px 60px #505052;
   border-radius: 10px;
 }
 #filter-list {
@@ -93,6 +93,10 @@ body {
 }
 .address {
   padding-left: 5px;
+  font-size: 15pt;
+  border-style: none;
+  width: 100%;
+  margin-top: 10px;
   box-shadow: 0px 12px 60px #505052;
 }
 /* Addresses in the filterList */
@@ -100,28 +104,25 @@ body {
   border-radius: 15px;
   box-shadow: -10px 2px 20px #505052;
 }
-/* Icon of the Restaurants */
-.img {
-  background-color: #0a0a08;
-  border-radius: 10px;
-}
 .infoWindow p {
-  font-size: 15pt;
+  line-height: 1;
+  font-size: 13pt;
 }
 /* Errors */
 .apiError {
   position: absolute;
   z-index: 24;
   background-color: white;
-  left: 35%;
-  padding: 50px 100px 50px 100px;
-  top: 35%;
   border-radius: 10px;
+  height: 44px;
+  width: 100%;
   box-shadow: 2px 2px 20px #505052;
   font-size: 18pt;
+  text-align: center;
 }
+/* If screen is less than 372px apply these styles */
 @media screen and (max-width: 372px) {
-  .titleBar {
+  .sideBar {
     width: 260px;
     font-size: 12.75pt;
   }
@@ -142,8 +143,9 @@ body {
     margin: 0;
   }
 }
+/* If screen is between 373px and 412px apply these styles */
 @media screen and (min-width: 373px) and (max-width: 412px) {
-  .titleBar {
+  .sideBar {
     font-size: 15pt;
   }
   #filter-list {
@@ -155,7 +157,7 @@ body {
   .address p {
     margin: 0;
   }
-  .titleBar {
+  .sideBar {
     width: 325px;
   }
   .navBar {
@@ -169,6 +171,7 @@ body {
       top: 90px;
   }
 }
+/* If screen is greater than 880px apply these styles */
 @media screen and (min-width: 880px) {
   .maps {
     display: flex;

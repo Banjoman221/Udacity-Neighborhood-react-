@@ -21,3 +21,38 @@ allLocations.map(locals =>
     }
   )
 );
+/* navBar */
+.navComponent {
+  display: flex;
+}
+.nav {
+  width: 30px;
+  margin: 3.7px 10px 10px 10px;
+  cursor: pointer;
+}
+.navBar {
+  display: flex;
+  flex-flow: column;
+  background-color: #dedede;
+  width: 100%;
+  margin-left: 350px;
+  height: 44px;
+  border-radius: 10px;
+  z-index: 1;
+}
+.navigate {
+  display: flex;
+  flex-flow: column;
+  background-color: #dedede;
+  width: 100%;
+  margin-left: 0;
+  height: 44px;
+  border-radius: 10px;
+  z-index: 1;
+}
+.hamburgerMenu {
+  width: 35px;
+  height: 8px;
+  background-color: black;
+  margin: 1.7px;
+}

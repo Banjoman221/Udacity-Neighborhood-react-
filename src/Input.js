@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 
 class Input extends Component {
+    /*
+    * If the width of the window is below 880px hide the side navBar
+    */
+    responsiveToggle = () => {
+        const mapWidth = window.innerWidth;
+        if (mapWidth < 880) {
+             this.props.toggleNav()
+        }
+    }
   render() {
     return (
       <div className="input">
@@ -12,26 +21,23 @@ class Input extends Component {
           type="text"
           placeholder="Filter List"
           value={this.props.query}
-          aria-label='filter list'
+          aria-label='Filter list for Restaurants'
           onChange={event => this.props.updateQuery(event.target.value)}
         />
-        {/* List of addresses from Foursquare */}
+    {/* List of Names of places */}
         <div className="locationList">
           {this.props.addresses.map(local => (
-            <div className="addressList" key={local.venue.name}>
-              <div
+            <div className="addressList" key={local.name}>
+              <button
                 className="address"
                 onClick={() => {
-                  this.props.clickMarker(local.venue);
-                  this.props.toggleNav();
+                  this.props.clickMarker(local);
+                  this.responsiveToggle();
+                  this.props.foursquare(local)
                 }}
               >
-                <h3>{local.venue.name.toUpperCase()}</h3>
-                <p>
-                  {local.venue.location.formattedAddress[0]},
-                  {local.venue.location.formattedAddress[1]}
-                </p>
-              </div>
+              <h3>{local.name.toUpperCase()}</h3>
+              </button>
             </div>
           ))}
         </div>
