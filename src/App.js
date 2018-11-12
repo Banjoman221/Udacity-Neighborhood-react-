@@ -32,8 +32,14 @@ class App extends Component {
         'latLng': [{ 'lat':34.5077681647155, 'lng': -88.20660078502023}]
     }],
     logErr: "",
-    locationInfo: []
+    locationInfo: [],
+    error: false
 };
+componentWillMount() {
+    this.setState({
+        error: window.error || !navigator.onLine
+    });
+}
 /*
 * Fetch The Additional Data from Foursquare
 */
@@ -63,7 +69,7 @@ class App extends Component {
 
 
   render() {
-      const {logErr,locations , locationInfo} = this.state;
+      const {logErr,locations , locationInfo, error} = this.state;
       /*
       * If there is an error set it to logErr or if not an empty string
       */
@@ -79,7 +85,14 @@ class App extends Component {
             {logErr && <div className='apiError'>
                 <span>{logError}</span>
             </div>}
-          <Map location={locations} foursquare={this.fetchData} locationInfo={locationInfo} logErr={logError}/>
+            { !error &&
+                <Map location={locations} foursquare={this.fetchData} locationInfo={locationInfo} logErr={logError}/>
+            }
+              {error &&
+                  <div className="apiError">
+                      <span>GoogleMaps could not be loaded check your connection</span>
+                  </div>
+              }
       </div>
     );
   }

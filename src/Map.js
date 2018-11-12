@@ -1,7 +1,7 @@
 /* global google */
 import React, { Component } from "react";
 import {
-  withScriptjs,
+    withScriptjs,
   withGoogleMap,
   GoogleMap,
   Marker,
@@ -21,7 +21,7 @@ const mapHeight = window.innerHeight;
 const MyMap = compose(
   withProps({
     googleMapURL:
-      "https://maps.googleapis.com/maps/api/js?key=AIzaSyAyV5BZnr2kzuVz0q-hLwUYvvwN4Q6noU0&v=3.exp&libraries=geometry,drawing,places",
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyAyV5BZnr2kzuVz0q-hLwUYvvwN4Q6noU0&v=3.exp&libraries=geometry,drawing,places ",
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: (
       <div
@@ -87,11 +87,11 @@ class Map extends Component {
     showIndex: null,
     animation: null,
     query: "",
-    navToggled: true
+    navToggled: true,
   };
   componentDidMount() {
-      const windowWidth = window.innerWidth;
-      /*
+    const windowWidth = window.innerWidth;
+    /*
       * Finds the width of the window and toggles navigation bar for responsiveness
       */
     if (windowWidth < 880) {
@@ -104,6 +104,9 @@ class Map extends Component {
       });
     }
   }
+
+
+
   /*
   * When a marker is clicked on the infoWindow is isOpened and makes it animate
   */
@@ -147,9 +150,17 @@ class Map extends Component {
       navToggled: false
     });
   };
+
   render() {
     const { foursquare, location, locationInfo, logError } = this.props;
-    const { navToggled, isOpen, showIndex, animation, query } = this.state;
+    const {
+      navToggled,
+      isOpen,
+      showIndex,
+      animation,
+      query,
+      script
+    } = this.state;
     let filteredMarkers;
     let map;
     if (query) {
@@ -157,29 +168,29 @@ class Map extends Component {
       /*
       * Filters the markers by its name according to the query
       */
-      filteredMarkers = location.filter(
-        b => match.test(b.name)
-      );
+      filteredMarkers = location.filter(b => match.test(b.name));
     } else {
-        /*
+      /*
         * Default all markers
         */
       filteredMarkers = location;
     }
     if (!navToggled) {
-        /*
+      /*
         * If the navigation bar is closed make map full width
         */
       map = "moveMaps";
     } else {
-        /*
+      /*
         * If the navigation bar is open move map over for nav bar
         */
       map = "maps";
     }
+
+    console.log(script);
     return (
       <div className="mapApp">
-          {/* NavBar */}
+        {/* NavBar */}
         <NavBar
           updateQuery={this.updateQuery}
           openClick={this.openClick}
@@ -190,19 +201,22 @@ class Map extends Component {
           foursquare={foursquare}
           listQuery={query}
         />
-        <div className={map}>
-            {/* Render My Map */}
-          <MyMap
-            markers={filteredMarkers}
-            openClick={this.openClick}
-            closeClick={this.closeClick}
-            isOpen={isOpen}
-            showIndex={showIndex}
-            bounce={animation}
-            foursquareApi={foursquare}
-            locationInfo={locationInfo}
-            logErr={logError}
-          />
+
+
+    <div className={map} tabIndex='-1' role="application">
+          {/* Render My Map
+              */}
+            <MyMap
+              markers={filteredMarkers}
+              openClick={this.openClick}
+              closeClick={this.closeClick}
+              isOpen={isOpen}
+              showIndex={showIndex}
+              bounce={animation}
+              foursquareApi={foursquare}
+              locationInfo={locationInfo}
+              logErr={logError}
+            />
         </div>
       </div>
     );

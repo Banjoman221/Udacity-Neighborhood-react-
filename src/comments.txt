@@ -1,18 +1,101 @@
-componentWillUpdate(nextProps, nextState) {
-    sessionStorage.setItem('locations', JSON.stringify(nextState.locations));
-    sessionStorage.setItem('locationsDate', Date.now());
+initMap = () => {
+    let map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 34.50982, lng: -88.207},
+    zoom: 15
+  });
+  let marker;
+  let infowindow;
+  {this.props.location.map(local => (
+  marker = new google.maps.Marker({position: local.latLng[0], map: map}),
+  infowindow = new google.maps.InfoWindow({
+  content: ''
+}),
+marker.addListener('click', function() {
+  infowindow.open(map, marker)
+})
+))}
 }
+import {
+    withScriptjs,
+  withGoogleMap,
+  GoogleMap,
+  Marker,
+  InfoWindow
+} from "react-google-maps";
+import { compose, withProps } from "recompose";
 
-if (!sessionStorage.getItem('locations')) {
-    this.fetchData();
-} else {
-      console.log('Using Data from sessionStorage');
+https://maps.googleapis.com/maps/api/js?key=AIzaSyAyV5BZnr2kzuVz0q-hLwUYvvwN4Q6noU0&v=3.exp&libraries=geometry,drawing,places
+
+function(callback) {
+    const MyMap = compose(
+      withProps({
+        loadingElement: <div style={{ height: `100%` }} />,
+        containerElement: (
+          <div
+            style={{
+              width: "100%",
+              height: `${mapHeight}px`,
+              boxShadow: `0px 12px 60px #505052`,
+              borderRadius: `10px`
+            }}
+          />
+        ),
+        mapElement: <div style={{ height: `100%` }} />
+      }),
+      withGoogleMap
+    )(props => (
+      <GoogleMap defaultZoom={15} defaultCenter={{ lat: 34.50982, lng: -88.207 }}
+
+          >
+          {/*
+          * Loop through my markers
+          */}
+        {props.markers.map(local => (
+          <Marker
+            className="marker"
+            key={local.id}
+            position={local.latLng[0]}
+            onClick={() => {
+              props.openClick(local);
+              props.foursquareApi(local);
+            }}
+            animation={props.isOpen && props.showIndex === local.id && props.bounce}
+          >
+            {props.isOpen &&
+              props.showIndex === local.id && (
+                  <InfoWindow onCloseClick={props.closeClick}>
+                  <div className="infoWindow">
+                    <h2>{local.name.toUpperCase()}</h2>
+                    {/*
+                    * Information gathered from the Foursquare api call
+                    */}
+                {props.locationInfo.map(info => (
+                      <div key={info.id}>
+                          <p>Address: {info.location.formattedAddress[0]},</p>
+                              <p>{info.location.formattedAddress[1]}</p>
+                        {info.likes.summary && <p>Likes: {info.likes.summary}</p>}
+                        {info.contact.formattedPhone &&
+                          <p>Phone: {info.contact.formattedPhone}</p>
+                        }
+                        {info.hours && <p>Hours: {info.hours.status}</p>}
+                        <a  href="https://foursquare.com/">Powered by Foursquare</a>
+                      </div>
+                    ))}
+                  </div>
+              </InfoWindow>
+            )}
+          </Marker>
+        ))}
+      </GoogleMap>
+    ));
 }
-componentWillMount() {
-    sessionStorage.getItem('locations') && this.setState({
-        locations: JSON.parse(sessionStorage.getItem('locations'))
-    });
-}
-fetch(
-  "https://api.foursquare.com/v2/venues/explore?client_id=5RQJDOUUNXSGPAHMUHIIKG0H4TJXZV1PTB42MRM2L4M2435W&client_secret=JR2E1K4WRYLEOJGSFWNYYEPLRR2PXXL1KB5ANU3U5E4KFPFZ&v=20180323&near=Belmont,MS&query=food&radius=1000",
-)
+function loadScript(src, callback) {
+    let index = document.getElementsByTagName("head")[0];
+    let script = document.createElement("script");
+  script.src = src;
+  script.async = true;
+  script.async = true;
+  script.onload = () => callback();
+  script.onerror = () => window.gm_authFailure
+  index.appendChild(script);
+};

@@ -61,9 +61,9 @@ body {
   background-color: #dedede;
 }
 /* Map */
-.moveMaps {
-  padding-left: 0;
-}
+#map {
+    height: 100vh;
+  }
 /* Side Bar */
 .sideBar {
   background-color: #dedede;
@@ -116,6 +116,7 @@ body {
   border-radius: 10px;
   height: 44px;
   width: 100%;
+  top: 50px;
   box-shadow: 2px 2px 20px #505052;
   font-size: 18pt;
   text-align: center;
