@@ -25,9 +25,11 @@
       function gm_authFailure() {
         window.error = true;
         // This error occurs after React has already started to render the map component, so use DOM manipulation to override Google's message.
+        // document.querySelector('.error').innerHTML = '<div class="apiError"><span>GoogleMaps could not be loaded check your connection</span></div>';
+        document.querySelector('.error').innerHTML = "<div class='apiError'><span>GoogleMaps could not be loaded check your connection</span></div>"
       }
   </script>
-  <script src="https://maps.gogleapis.com/maps/api/js?key=AIzaSyAyV5BZnr2kzuVz0q-hLwUYvvwN4Q6noU0&v=3.exp&libraries=geometry,drawing,places" onerror="googleError()"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyV5BZnr2kzuVz0q-hLwUYvvwN4Q6noU0&v=3.exp&libraries=geometry,drawing,places" onerror="googleError()"></script>
   </head>
   <body>
       <noscript>

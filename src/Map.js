@@ -1,7 +1,6 @@
 /* global google */
 import React, { Component } from "react";
 import {
-    withScriptjs,
   withGoogleMap,
   GoogleMap,
   Marker,
@@ -11,23 +10,18 @@ import { compose, withProps } from "recompose";
 import NavBar from "./NavBar";
 import escapeRegExp from "escape-string-regexp";
 
-/*
-* Gets the height of the window to make the map height more responsive
-*/
-const mapHeight = window.innerHeight;
+
 /*
 * The set up for maps using React-google-maps
 */
 const MyMap = compose(
   withProps({
-    googleMapURL:
-      "https://maps.googleapis.com/maps/api/js?key=AIzaSyAyV5BZnr2kzuVz0q-hLwUYvvwN4Q6noU0&v=3.exp&libraries=geometry,drawing,places ",
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: (
       <div
         style={{
           width: "100%",
-          height: `${mapHeight}px`,
+          height: `100vh`,
           boxShadow: `0px 12px 60px #505052`,
           borderRadius: `10px`
         }}
@@ -35,7 +29,6 @@ const MyMap = compose(
     ),
     mapElement: <div style={{ height: `100%` }} />
   }),
-  withScriptjs,
   withGoogleMap
 )(props => (
   <GoogleMap defaultZoom={15} defaultCenter={{ lat: 34.50982, lng: -88.207 }}>
@@ -61,7 +54,7 @@ const MyMap = compose(
                 {/*
                 * Information gathered from the Foursquare api call
                 */}
-            {props.locationInfo.map(info => (
+            { props.locationInfo[0] !== undefined && props.locationInfo.map(info => (
                   <div key={info.id}>
                       <p>Address: {info.location.formattedAddress[0]},</p>
                           <p>{info.location.formattedAddress[1]}</p>
@@ -73,6 +66,9 @@ const MyMap = compose(
                     <a  href="https://foursquare.com/">Powered by Foursquare</a>
                   </div>
                 ))}
+            { props.locationInfo[0] === undefined  &&
+                <p>Data not Available</p>
+            }
               </div>
           </InfoWindow>
         )}
@@ -88,7 +84,13 @@ class Map extends Component {
     animation: null,
     query: "",
     navToggled: true,
+    error: null
   };
+  componentWillMount() {
+      this.setState({
+          error: window.error || !navigator.onLine
+      });
+  }
   componentDidMount() {
     const windowWidth = window.innerWidth;
     /*
@@ -159,7 +161,7 @@ class Map extends Component {
       showIndex,
       animation,
       query,
-      script
+      error
     } = this.state;
     let filteredMarkers;
     let map;
@@ -186,8 +188,9 @@ class Map extends Component {
         */
       map = "maps";
     }
+    console.log(logError);
 
-    console.log(script);
+    console.log(location);
     return (
       <div className="mapApp">
         {/* NavBar */}
@@ -201,11 +204,16 @@ class Map extends Component {
           foursquare={foursquare}
           listQuery={query}
         />
-
-
+        {error &&
+            <div className="apiError">
+                <span>GoogleMaps could not be loaded check your connection</span>
+            </div>
+        }
+        <div className="error"></div>
     <div className={map} tabIndex='-1' role="application">
           {/* Render My Map
               */}
+              {!error &&
             <MyMap
               markers={filteredMarkers}
               openClick={this.openClick}
@@ -217,6 +225,7 @@ class Map extends Component {
               locationInfo={locationInfo}
               logErr={logError}
             />
+    }
         </div>
       </div>
     );

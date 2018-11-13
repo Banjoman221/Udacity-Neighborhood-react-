@@ -60,10 +60,7 @@ body {
   max-width: 100%;
   background-color: #dedede;
 }
-/* Map */
-#map {
-    height: 100vh;
-  }
+
 /* Side Bar */
 .sideBar {
   background-color: #dedede;
@@ -111,11 +108,11 @@ body {
 /* Errors */
 .apiError {
   position: absolute;
-  z-index: 24;
+  z-index: 1;
   background-color: white;
   border-radius: 10px;
   height: 44px;
-  width: 100%;
+  width:100%;
   top: 50px;
   box-shadow: 2px 2px 20px #505052;
   font-size: 18pt;

@@ -33,13 +33,8 @@ class App extends Component {
     }],
     logErr: "",
     locationInfo: [],
-    error: false
 };
-componentWillMount() {
-    this.setState({
-        error: window.error || !navigator.onLine
-    });
-}
+
 /*
 * Fetch The Additional Data from Foursquare
 */
@@ -69,7 +64,7 @@ componentWillMount() {
 
 
   render() {
-      const {logErr,locations , locationInfo, error} = this.state;
+      const {logErr,locations , locationInfo} = this.state;
       /*
       * If there is an error set it to logErr or if not an empty string
       */
@@ -79,20 +74,16 @@ componentWillMount() {
     } else {
       logError = "";
     }
+    console.log(locationInfo);
+    console.log(locations);
     return (
         <div className="app">
             {/* Error Message if fetchData does not work*/}
             {logErr && <div className='apiError'>
                 <span>{logError}</span>
             </div>}
-            { !error &&
-                <Map location={locations} foursquare={this.fetchData} locationInfo={locationInfo} logErr={logError}/>
-            }
-              {error &&
-                  <div className="apiError">
-                      <span>GoogleMaps could not be loaded check your connection</span>
-                  </div>
-              }
+                <Map location={locations} foursquare={this.fetchData} locationInfo={locationInfo === undefined ? undefined : locationInfo } logErr={logError}/>
+
       </div>
     );
   }
